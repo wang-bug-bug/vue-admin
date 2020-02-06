@@ -48,6 +48,8 @@
     </div>
 </template>
 <script>
+    import sha1 from 'js-sha1'  
+    //加密
     import {
         getSms,
         register,
@@ -235,7 +237,7 @@
             const Login = (() => {
                 let requestData = {
                     username: ruleForm.username,
-                    password: ruleForm.password,
+                    password: sha1(ruleForm.password),
                     code: ruleForm.code,
                     module: model.value
                 }
@@ -249,6 +251,9 @@
                     }
 
                 }).catch(error => {
+                    code.value=""
+                    clearCountDown()
+                    codeBtn.text="重新获取"
                     console.log(error)
                 })
             })
@@ -256,7 +261,7 @@
             const Register = (() => {
                 let requestData = {
                     username: ruleForm.username,
-                    password: ruleForm.password,
+                    password: sha1(ruleForm.password),
                     code: ruleForm.code,
                     module: model.value
                 }
@@ -272,6 +277,9 @@
                     }
 
                 }).catch(error => {
+                    code.value=""
+                    clearCountDown()
+                    codeBtn.text="重新获取"
                     console.log(error)
                 })
             })
@@ -375,6 +383,9 @@
                 clearCountDown,
                 loginBtnStatus,
                 codeBtn,
+                timer,
+
+                
                 // codeBtnStatus,
                 // codeBtn
             }
@@ -434,3 +445,28 @@
         margin-top: 19px;
     }
 </style>
+
+
+<!-- 
+    密码加密：
+    1.在前端预先加密一次
+    登录的时候密码：123456
+    经过加密之后sha1('123456')='123qwsaseq23123qsatyer5'(加密后的字符串)
+
+    2.后台加密
+    接受到字符串:'123qwsaseq23123qsatyer5'
+    后台再次加密:md5()=>新字符串
+
+    3.登录
+                                                                                                                                                                             
+
+
+ -->
+
+
+
+
+
+
+
+

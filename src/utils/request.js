@@ -13,6 +13,12 @@ const service = axios.create({
 // 添加请求拦截器
 service.interceptors.request.use(function (config) {
     // 在发送请求之前做些什么
+
+    //请求头添加参数
+
+    // config.headers['Tokey']='123'
+
+
     return config;
 }, function (error) {
     // 对请求错误做些什么
