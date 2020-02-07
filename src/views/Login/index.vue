@@ -234,6 +234,7 @@
                 }, 1000);
             })
 
+            //登录
             const Login = (() => {
                 let requestData = {
                     username: ruleForm.username,
@@ -242,13 +243,18 @@
                     module: model.value
                 }
                 login(requestData).then(res => {
-                    let data = res.data;
-                    if (data.resCode === 0) {
-                        root.$message({
-                            message: data.message,
-                            type: 'success'
-                        })
-                    }
+                    // let data = res.data;
+                    // if (data.resCode === 0) {
+                    //     root.$message({
+                    //         message: data.message,
+                    //         type: 'success'
+                    //     })
+                    // }
+
+                    //页面跳转
+                    root.$router.push({name:'Console'})
+
+                        
 
                 }).catch(error => {
                     code.value=""
@@ -258,6 +264,7 @@
                 })
             })
 
+            //注册
             const Register = (() => {
                 let requestData = {
                     username: ruleForm.username,
