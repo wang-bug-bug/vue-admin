@@ -1,22 +1,71 @@
 <template>
     <div id="nav-wrap">
-        菜单
+        <el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
+            :collapse="isCollapse" background-color="transparent" text-color="#fff" active-text-color="#fff" router>
+            <template v-for="(item,index) in routers">  
+                <!-- v-for 一般不和v-if同时作用   因为v-for优先级大于v-if
+                    所以遍历的时候需要加上template标签，不会出现在html上面，
+                    而且不在上面绑定key，这样就可以遍历元素的时候判断是否显示
+                -->
+                <el-submenu v-if="!item.hidden" :key="item.id" :index="`${index}`">
+                    <template slot="title">
+                        <svg-icon :iconClass="item.meta.icon"/>
+                        <span slot="title">{{item.meta.name}}</span>
+                    </template>
+
+                    <el-menu-item v-for="subItem in item.children" :key="subItem.id" :index="subItem.path">{{subItem.meta.name}}
+                    </el-menu-item>
+                </el-submenu>
+            </template>
+        </el-menu>
     </div>
 </template>
 <script>
-    export default{
+    import {
+        ref,
+        reactive
+    } from '@vue/composition-api'
+    export default {
+        name: 'narMenu',
+        setup(props, {
+            root
+        }) {
+            // console.log(root.$router.options.routes) 所有路由
 
+            const routers = reactive(root.$router.options.routes)
+
+
+            const isCollapse = ref(false)
+
+            const handleOpen = (key, keyPath) => {
+            }
+
+            const handleClose = (key, keyPath) => {
+            }
+
+            return {
+                isCollapse,
+                handleOpen,
+                handleClose,
+                routers
+            }
+        }
     }
 </script>
 
 <style lang="scss" scoped>
     @import '../../../styles/config.scss';
-    #nav-wrap{
+
+    #nav-wrap {
         position: fixed;
         top: 0;
         left: 0;
         height: 100vh;
         width: $navMenu;
         background-color: #344a5f;
+        svg{
+            font-size: 20px;
+            margin-right: 10px;
+        }
     }
 </style>
