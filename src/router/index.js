@@ -75,7 +75,7 @@ const routes = [{
     name: "User",
     meta: {
       name: '用户管理',
-      icon: 'info'
+      icon:　'user'
     },
     component: Layout,
     children: [{

@@ -69,7 +69,7 @@ module.exports = {
     proxy: {
       //配置跨域
       '/api': {
-        target: "http://www.web-jshtml.cn/productapi", //API服务器地址
+        target: "http://www.web-jshtml.cn/dependenciesapi", //API服务器地址
         changOrigin: true,
         pathRewrite: {
           '^/api': '' //http://www.web-jshtml.cn/productapi/api  替换/api

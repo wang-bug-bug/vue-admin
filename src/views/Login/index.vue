@@ -48,7 +48,7 @@
     </div>
 </template>
 <script>
-    import sha1 from 'js-sha1'  
+    import sha1 from 'js-sha1'
     //加密
     import {
         getSms,
@@ -242,26 +242,37 @@
                     code: ruleForm.code,
                     module: model.value
                 }
-                login(requestData).then(res => {
-                    // let data = res.data;
-                    // if (data.resCode === 0) {
-                    //     root.$message({
-                    //         message: data.message,
-                    //         type: 'success'
-                    //     })
-                    // }
 
+                root.$store.dispatch('Login', requestData).then(res => {
                     //页面跳转
-                    root.$router.push({name:'Console'})
-
-                        
+                    root.$router.push({
+                        name: 'Console'
+                    })
 
                 }).catch(error => {
-                    code.value=""
+                    code.value = ""
                     clearCountDown()
-                    codeBtn.text="重新获取"
+                    codeBtn.text = "重新获取"
                     console.log(error)
                 })
+                // login(requestData).then(res => {
+                //     // let data = res.data;
+                //     // if (data.resCode === 0) {
+                //     //     root.$message({
+                //     //         message: data.message,
+                //     //         type: 'success'
+                //     //     })
+                //     // }
+
+                //     //页面跳转
+                //     root.$router.push({name:'Console'})
+
+                // }).catch(error => {
+                //     code.value=""
+                //     clearCountDown()
+                //     codeBtn.text="重新获取"
+                //     console.log(error)
+                // })
             })
 
             //注册
@@ -284,9 +295,9 @@
                     }
 
                 }).catch(error => {
-                    code.value=""
+                    code.value = ""
                     clearCountDown()
-                    codeBtn.text="重新获取"
+                    codeBtn.text = "重新获取"
                     console.log(error)
                 })
             })
@@ -392,7 +403,7 @@
                 codeBtn,
                 timer,
 
-                
+
                 // codeBtnStatus,
                 // codeBtn
             }
@@ -469,11 +480,3 @@
 
 
  -->
-
-
-
-
-
-
-
-

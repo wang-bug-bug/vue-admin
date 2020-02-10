@@ -63,7 +63,7 @@
         height: 1em;
         fill: currentColor;
         /* 修改字体颜色要用这个属性 */
-        color: white;
+        /* color: white; */
 
         &.font12 {
             font-size: 12px;
