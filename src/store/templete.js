@@ -12,7 +12,7 @@ export default new Vuex.Store({
     isCollapse: JSON.parse(Cookie.get('isCollapse')) || false,
     // isCollapse: JSON.parse(sessionStorage.getItem('isCollapse')) || false,
     count: 10
-  },
+  },                                              
   getters: {
     count: state => state.count + 10
   },

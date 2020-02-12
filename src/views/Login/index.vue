@@ -243,7 +243,7 @@
                     module: model.value
                 }
 
-                root.$store.dispatch('Login', requestData).then(res => {
+                root.$store.dispatch('login/Login', requestData).then(res => {
                     //页面跳转
                     root.$router.push({
                         name: 'Console'

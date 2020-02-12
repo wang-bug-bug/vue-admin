@@ -6,26 +6,50 @@
         <div class="pull-right">
             <div class="user-info pull-left">
                 <img src="../../../assets/images/face.jpg" alt="">
-                管理员
+                {{username}}
             </div>
-            <div class="header-icon pull-left">
+            <div class="header-icon pull-left" @click="exit">
                 <svg-icon iconClass="back" className="back" />
             </div>
         </div>
     </div>
 </template>
 <script>
+    import {
+        computed
+    } from '@vue/composition-api'
     export default {
         name: 'LayoutHeader',
         setup(props, {
             root
         }) {
             const navMenuState = () => {
-                root.$store.dispatch('setMenuStatus',{"name":"sa"})
+                root.$store.dispatch('app/setMenuStatus', {
+                    "name": "sa"
+                }) //调用action里面的
                 // root.$store.commit('SET_COLLAPSE')
             }
+
+            const username = computed(() => {
+                return root.$store.state.login.username
+            })
+
+
+            const exit = (() => {
+                root.$store.dispatch("login/Exit").then(res => {
+                    root.$router.push({
+                        name: 'Login'
+                    })
+                }).catch(errror => {
+                    console.log(error)
+                })
+            })
+
+
             return {
-                navMenuState
+                navMenuState,
+                username,
+                exit
             }
         }
     }
@@ -42,8 +66,8 @@
         right: 0;
         background-color: #fff;
         line-height: 75px;
-        @include webkit(transition,all .3s ease 0s);
-        @include webkit(box-shadow,0 3px 16px 0 rgba(0, 0, 0, .1));
+        @include webkit(transition, all .3s ease 0s);
+        @include webkit(box-shadow, 0 3px 16px 0 rgba(0, 0, 0, .1));
     }
 
     .header-icon {
