@@ -9,9 +9,12 @@ import VueCompositionApi from '@vue/composition-api';
 import "./icons"
 //路由守卫
 import "./router/premit"
+//全局方法
+import global from "@/utils/global"
 
 Vue.use(ElementUI);
 Vue.use(VueCompositionApi);
+Vue.use(global)
 
 Vue.config.productionTip = false;
 

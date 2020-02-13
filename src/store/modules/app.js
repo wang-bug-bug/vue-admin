@@ -29,7 +29,7 @@ const actions={
 }
 
 export default{
-    namespaced:true,    //
+    namespaced:true,    //命名
     state,
     getters,
     mutations,

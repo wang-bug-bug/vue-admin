@@ -54,3 +54,20 @@ th{
 td{
     color:#606266;
 }
+
+.el-dialog__body{
+    padding: 30px 47px !important;
+}
+
+.el-dialog__footer{
+    text-align: center !important;
+    padding-bottom: 50px !important;
+    .el-button{
+        width: 120px;
+        margin: 0 11px !important;
+
+    }
+}
+
+
+

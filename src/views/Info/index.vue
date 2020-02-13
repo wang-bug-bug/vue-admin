@@ -12,10 +12,10 @@
                         </el-select>
                     </el-form-item>
                 </el-col>
-                <el-col :span="9">
+                <el-col :span="10">
                     <el-form-item label="日期">
                         <el-date-picker v-model="formInline.dateValue" type="datetimerange" start-placeholder="开始日期"
-                            end-placeholder="结束日期" style="width: 390px;">
+                            end-placeholder="结束日期" style="width: 420px;">
                         </el-date-picker>
                     </el-form-item>
                 </el-col>
@@ -51,14 +51,14 @@
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                     <el-button type="success" size="small">编辑</el-button>
-                    <el-button type="danger" size="small">删除</el-button>
+                    <el-button type="danger" size="small" @click="del">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
         <div class="black-space-30"></div>
         <el-row>
             <el-col :span="12">
-                <el-button size="small">批量删除 </el-button>
+                <el-button size="small" @click="delAll">批量删除 </el-button>
             </el-col>
             <el-col :span="12">
                 <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
@@ -68,7 +68,6 @@
             </el-col>
         </el-row>
 
-        //弹窗组件
         <DialogInfo :flag="dialogInfo" @close="close" />
 
     </div>
@@ -87,7 +86,9 @@
         components: {
             DialogInfo
         },
-        setup(props) {
+        setup(props, {
+            root
+        }) {
             const dialogInfo = ref(false)
 
             const formInline = reactive({
@@ -156,6 +157,27 @@
                 dialogInfo.value = data
             }
 
+            const del = () => {
+                root.confirm({
+                    content: '此操作将永久删除该文件, 是否继续?',
+                    fn:confirmDel,
+                    id:'123'
+                })
+            }
+
+            const delAll = () => {
+                root.confirm({
+                    content: '此操作将永久删除选中文件, 是否继续?',
+                    fn:confirmDel
+                })
+                //传入对象参数方便后期维护
+            }
+
+            const confirmDel=(data)=>{
+                console.log(data)
+            }
+
+
             return {
                 formInline,
                 selectkey,
@@ -165,7 +187,9 @@
                 dialogTableVisible,
                 gridData,
                 dialogInfo,
-                close
+                close,
+                del,
+                delAll
             }
         }
     }
