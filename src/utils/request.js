@@ -2,6 +2,11 @@ import axios from 'axios';
 import {
     Message
 } from 'element-ui';
+import {
+    getToken,
+    getUsername
+} from '@/utils/app'
+
 
 const BASEURL = process.env.NODE_ENV === 'production' ? '' : '/api';
 
@@ -16,7 +21,8 @@ service.interceptors.request.use(function (config) {
 
     //请求头添加参数
 
-    // config.headers['Tokey']='123'
+     config.headers['Tokey']=getToken()
+     config.headers['UserName']=getUsername()
 
 
     return config;
