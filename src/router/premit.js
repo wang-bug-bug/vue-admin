@@ -37,7 +37,6 @@ router.beforeEach((to, from, next) => {
         if (whiteRouter.indexOf(to.path) !== -1) {
             next();
         } else {
-            console.log("123")
             next('/login');
         }
 

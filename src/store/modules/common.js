@@ -6,7 +6,7 @@ const actions = {
     getCategoryItem(content) {
         return new Promise((resolve,reject) => {
             getCategoryList().then(res => {
-                resolve(res.data.data.data)
+                resolve(res.data.data)
             }).catch(error => {
                 reject()
             })

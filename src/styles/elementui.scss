@@ -39,7 +39,7 @@ li.el-submenu {
     }
 }
 
-.el-form-item__content{
+.el-form-item__content {
     font-size: 13px !important;
 }
 
@@ -47,27 +47,41 @@ label {
     font-weight: 700;
 }
 
-th{
+th {
     font-weight: bold;
-    color:#606266;
-}
-td{
-    color:#606266;
+    color: #606266;
 }
 
-.el-dialog__body{
+td {
+    color: #606266;
+}
+
+.el-dialog__body {
     padding: 30px 47px !important;
 }
 
-.el-dialog__footer{
+.el-dialog__footer {
     text-align: center !important;
     padding-bottom: 50px !important;
-    .el-button{
+
+    .el-button {
         width: 120px;
         margin: 0 11px !important;
 
     }
 }
 
+.el-table th,
+.el-table tr {
+    background-color: #57c195 !important;
+}
 
 
+
+.el-table__body tr:hover>td {
+    background-color: #73d884 !important;
+}
+
+.el-table__body tr.current-row>td {
+    background-color: #73d884 !important;
+}

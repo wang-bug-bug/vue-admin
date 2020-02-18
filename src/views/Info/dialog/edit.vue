@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog
-      title="新增"
+      title="修改"
       :visible.sync="dialog_info"
       @close="close"
       width="600px"
@@ -35,7 +35,7 @@
 </template>
 <script>
 import { ref, reactive, watch } from "@vue/composition-api";
-import { addInfo } from "@/api/news/news";
+import { editInfo, infoList } from "@/api/news/news";
 export default {
   name: "dialogInfo",
   //props 单向数据流，父级--》子级 不能反向修改
@@ -47,6 +47,10 @@ export default {
     category: {
       type: Array,
       default: () => []
+    },
+    id: {
+      type: String,
+      default: ""
     }
   },
   setup(props, { root, emit, refs }) {
@@ -77,20 +81,38 @@ export default {
     const open = () => {
       refs["ruleform"].resetFields();
       categoryList.cate = props.category;
+      getInfo(props.id);
     };
 
     watch(() => {
       dialog_info.value = props.flag;
     });
 
+    const getInfo = data => {
+      let requestData = {
+        pageNumber: 1,
+        pageSize: 1,
+        id: data
+      };
+      infoList(requestData)
+        .then(res => {
+          let response = res.data.data.data[0];
+          form.category = response.categoryId;
+          form.title = response.title;
+          form.content = response.content;
+        })
+        .catch(error => {});
+    };
+
     const submit = () => {
       let requsetData = {
-        category: form.category,
+        id: props.id,
+        categoryId: form.category,
         title: form.title,
         content: form.content
       };
 
-      if (!requsetData.category) {
+      if (!requsetData.categoryId) {
         root.$message({
           message: "分类不能为空！",
           type: "error"
@@ -99,7 +121,7 @@ export default {
       }
       load.value = true;
 
-      addInfo(requsetData)
+      editInfo(requsetData)
         .then(res => {
           if (res.data.resCode === 0) {
             root.$message({
@@ -124,7 +146,8 @@ export default {
       open,
       categoryList,
       submit,
-      load
+      load,
+      getInfo
     };
   }
 };

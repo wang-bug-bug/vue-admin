@@ -12,15 +12,18 @@
                 {{item.category_name}}
                 <div class="button-group">
                   <el-button type="danger" size="mini" round @click="editFirst(item)">编辑</el-button>
-                  <el-button type="success" size="mini" round>添加子级</el-button>
+                  <el-button type="success" size="mini" round @click="addChild(item)">添加子级</el-button>
                   <el-button type size="mini" round @click="dleFirst(item.id)">删除</el-button>
                 </div>
               </h4>
               <ul v-if="item.children">
-                <li
-                  v-for="itemChild in item.children"
-                  :key="itemChild.id"
-                >{{itemChild.category_name}}</li>
+                <li v-for="itemChild in item.children" :key="itemChild.id">
+                  {{itemChild.category_name}}
+                  <div class="button-group">
+                    <el-button type="danger" size="mini" round @click="editFirst(itemChild)">编辑</el-button>
+                    <el-button type size="mini" round @click="dleFirst(itemChild.id)">删除</el-button>
+                  </div>
+                </li>
               </ul>
             </div>
           </div>
@@ -37,7 +40,7 @@
             </el-form-item>
             <el-form-item label="二级分类名称" v-if="category_second">
               <el-input
-                v-model="formLabelAlign.region"
+                v-model="formLabelAlign.secondName"
                 maxlength="8"
                 :disabled="category_second_disabled"
               ></el-input>
@@ -58,7 +61,8 @@ import {
   addFirstCategory,
   getCategoryList,
   deleteCategory,
-  editFirstCategory
+  editFirstCategory,
+  addChildrenCategory
 } from "@/api/news/news";
 
 export default {
@@ -71,7 +75,7 @@ export default {
 
     const formLabelAlign = reactive({
       categoryName: "",
-      region: ""
+      secondName: ""
     });
 
     const submit = () => {
@@ -80,6 +84,9 @@ export default {
       }
       if (flag.value === 2) {
         addTwoCate();
+      }
+      if (flag.value === 3) {
+        addChildCate();
       }
     };
 
@@ -102,8 +109,8 @@ export default {
               type: "success"
             });
 
-            categoryList.item.push(res.data.data);
-            // getCategory();
+            // categoryList.item.push(res.data.data);
+            getCategory();
           }
           load.value = false;
           formLabelAlign.categoryName = "";
@@ -145,7 +152,6 @@ export default {
             //   item => item.id == categoryList.current.id
             // );
             // data[0].category_name = resData.data.data.categoryName;
-
             categoryList.current.category_name = resData.data.data.categoryName;
           }
           load.value = false;
@@ -156,6 +162,40 @@ export default {
           load.value = false;
           formLabelAlign.categoryName = "";
           // refs["ruleForm"].resetFields();
+        });
+    };
+
+    const addChildCate = () => {
+      if (!formLabelAlign.secondName) {
+        root.$message({
+          message: "分类名称不能为空",
+          type: "error"
+        });
+        return false;
+      }
+      load.value = true;
+
+      let data = {
+        parentId: categoryList.current.id,
+        categoryName: formLabelAlign.secondName
+      };
+
+      addChildrenCategory(data)
+        .then(res => {
+          if (res.data.resCode === 0) {
+            let resData = res.data;
+            root.$message({
+              message: resData.message,
+              type: "success"
+            });
+          }
+          load.value = false;
+          getCategory();
+          formLabelAlign.secondName = "";
+        })
+        .catch(error => {
+          load.value = false;
+          formLabelAlign.secondName = "";
         });
     };
 
@@ -174,6 +214,8 @@ export default {
     const buttonStatus = ref(true);
 
     const addFirst = () => {
+      formLabelAlign.categoryName = "";
+      category_first.value = true;
       category_first_disabled.value = false;
       buttonStatus.value = false;
       category_second.value = false;
@@ -183,7 +225,7 @@ export default {
     const getCategory = () => {
       getCategoryList()
         .then(res => {
-          categoryList.item = res.data.data.data;
+          categoryList.item = res.data.data;
         })
         .catch(error => {});
     };
@@ -201,6 +243,7 @@ export default {
     };
 
     const confirmDel = data => {
+
       deleteCategory({ categoryId: data })
         .then(res => {
           root.$message({
@@ -208,11 +251,11 @@ export default {
             type: "success"
           });
 
-          let index = categoryList.item.findIndex(item => {
-            item.id == data;
-          });
-          categoryList.item.splice(index, 1);
-          // getCategory();
+          // let index = categoryList.item.findIndex((item, index) => {
+          //   return item.id == data;
+          // });
+          // categoryList.item.splice(index, 1);
+          getCategory();
         })
         .catch(error => {});
     };
@@ -224,6 +267,16 @@ export default {
       formLabelAlign.categoryName = data.category_name;
       flag.value = 2;
       categoryList.current = data;
+    };
+
+    const addChild = data => {
+      formLabelAlign.categoryName = data.category_name;
+      category_second_disabled.value = false;
+      category_first_disabled.value = true;
+      category_second.value = true;
+      buttonStatus.value = false;
+      flag.value = 3;
+      categoryList.current.id = data.id;
     };
 
     return {
@@ -239,7 +292,9 @@ export default {
       buttonStatus,
       dleFirst,
       editFirst,
-      flag
+      flag,
+      addChild,
+      addChildCate
     };
   }
 };
